@@ -191,14 +191,14 @@ main() {
 	create_updates
 	create_haveged
 	create_ntp
-	create_new_user
+	#create_new_user
 	create_logwatch
 	create_ssh_server
-	upate_ssh_config
-	update_ssh_permissions
+	#upate_ssh_config
+	#update_ssh_permissions
 	update_ssh_server_key
 	update_upgrades
-	update_default_user
+	#update_default_user
 }
 
 # become uid0
