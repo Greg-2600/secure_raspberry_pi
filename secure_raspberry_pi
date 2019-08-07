@@ -2,8 +2,17 @@
 
 start_service() {
 # given service name as argument, start the service
+
 	service=$1
 	sudo service restart $service
+}
+
+
+install_service() {
+# given service name as argument, install the service
+
+	service=$1
+	sudo apt install -y $service
 }
 
 
@@ -67,13 +76,14 @@ update_upgrades() {
 create_fail2ban() {
 # install fail2ban to slow down door bangers
 
-	apt install -y fail2ban # tell apt to kindly do the needful
+	install_service fail2ban # tell apt to kindly do the needful
 	start_service fail2ban
 }
 
 
 update_default_user() {
 # lock the default user
+
 	default_user='pi' 		 # set default user for rPI
 	secret=$(create_secret) 	 # get a secret string
 
@@ -89,13 +99,15 @@ update_default_user() {
 
 create_ssh_server() {
 # install open ssh and try to lock it down
-	sudo apt install -y openssh-server # install sshd
+
+	install_service openssh-server # install sshd
 	start_service ssh
 }
 
 
 update_ssh_permissions() {
 # allow for key based authetnication 
+
 	mkdir ~/.ssh      		  # make a hidden dir for ssh files
 	chmod 0700 ~/.ssh 		  # make writable only by new_user
 	touch ~/.ssh/authorized_keys      # instantiate file to contain keys
@@ -106,6 +118,7 @@ update_ssh_permissions() {
 
 update_ssh_server_key() {
 # have sshd generate a new key now that additional entropy is available
+
 	rm -v /etc/ssh/ssh_host_*            # remove initially generated ssh keys
 	sudo dpkg-reconfigure openssh-server # generate them again
 	start_service ssh
@@ -142,7 +155,7 @@ upate_ssh_config() {
 create_ntp() {
 # accurate clock
 
-	sudo apt install -y ntp       # accurate time! 
+	install service ntp       # accurate time! 
 	start_service ntp
 }
 
@@ -150,7 +163,7 @@ create_ntp() {
 create_logwatch() {
 # root user receives daily email of log activity
 
-	sudo apt install -y logwatch  # log activity reporting daemon
+	install_service logwatch  # log activity reporting daemon
 	start_service logwatch
 }
 
@@ -162,15 +175,17 @@ create_haveged() {
 # this software package leverages a software only approach to populating
 # the entropy pool.  This is important to use as we want to (re)generate 
 # cryptographic certificates.
-	sudo apt install -y haveged  # entropy daemon
+
+	install_service haveged  # entropy daemon
 
 	start_service haveged
 }
 
-test() {
-echo "user name entered is $new_user"
-echo "choice entered is $choice"
-}
+
+#test() {
+	#echo "user name entered is $new_user"
+	#echo "choice entered is $choice"
+#}
 
 main() {
 	create_updates
