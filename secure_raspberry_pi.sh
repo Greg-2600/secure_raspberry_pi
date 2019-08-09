@@ -45,7 +45,7 @@ create_new_user() {
 	echo -e $secret $secret|sudo passwd $user_user 
 
 	# add new_user to the sudoers file
-	sudo usermod -aG $new_user 
+	sudo usermod -aG sudo $new_user 
 
 	# tell the user some information about what happened
 	echo "Please change the password for $new_user !" 	# secure by defailt
